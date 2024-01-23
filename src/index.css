@@ -7,9 +7,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   font-family: "Arial", sans-serif;
   background-color: #ffece6;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
   height: 100vh;
 }
 
@@ -22,7 +20,7 @@ code {
   padding: 20px;
   border-radius: 10px;
   width: 300px;
-  min-height: 500px;
+  min-height: 300px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 .todo-title {
@@ -47,4 +45,19 @@ code {
   margin-right: 10px;
   border: 2px solid #000;
   border-radius: 50%;
+}
+.error {
+  border: red 1px solid;
+}
+
+.error-message {
+  color: red;
+}
+
+.active-filter {
+  background-color: aquamarine;
+}
+
+.is-done {
+  opacity: 0.5;
 }
