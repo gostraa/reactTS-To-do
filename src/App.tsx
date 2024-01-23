@@ -1,5 +1,5 @@
 import { useState } from "react";
-import TodoList, { TaskI } from "./components/TodoList";
+import TodoList from "./components/TodoList";
 import "./index.css";
 import { v1 } from "uuid";
 
