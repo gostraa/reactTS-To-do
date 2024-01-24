@@ -1,7 +1,8 @@
 import { useState } from "react";
-import TodoList from "./components/TodoList";
+import TodoList, { TaskI } from "./components/TodoList";
 import "./index.css";
 import { v1 } from "uuid";
+import AddItemForm from "./components/AddItemForm";
 
 export type FilterValueType = "all" | "completed" | "active";
 
@@ -11,15 +12,19 @@ type TodoListType = {
   filter: FilterValueType;
 };
 
+type TaskObjStateType = {
+  [key: string]: Array<TaskI>;
+};
+
 function App() {
   let TLId1 = v1();
   let TLId2 = v1();
   let [todoLists, setTodoLists] = useState<Array<TodoListType>>([
-    { id: TLId1, title: "What to lern?", filter: "active" },
-    { id: TLId2, title: "What to buy?", filter: "completed" },
+    { id: TLId1, title: "What to lern?", filter: "all" },
+    { id: TLId2, title: "What to buy?", filter: "all" },
   ]);
 
-  let [tasksObj, setTasksObj] = useState({
+  let [tasksObj, setTasksObj] = useState<TaskObjStateType>({
     [TLId1]: [
       { id: v1(), title: "TypeScript", isDone: true },
       { id: v1(), title: "Angular", isDone: false },
@@ -27,10 +32,10 @@ function App() {
       { id: v1(), title: "React Development", isDone: false },
     ],
     [TLId2]: [
-      { id: v1(), title: "Database Optimization", isDone: false },
-      { id: v1(), title: "User Interface Design", isDone: false },
-      { id: v1(), title: "API Integration", isDone: true },
-      { id: v1(), title: "Automated Testing", isDone: false },
+      { id: v1(), title: "Milk", isDone: false },
+      { id: v1(), title: "Vegetables", isDone: false },
+      { id: v1(), title: "Fruits", isDone: true },
+      { id: v1(), title: "Ice cream", isDone: false },
     ],
   });
 
@@ -71,6 +76,20 @@ function App() {
     }
   }
 
+  function changeTaskTitle(
+    taskId: string,
+    newTitle: string,
+    todolistId: string
+  ) {
+    let tasks = tasksObj[todolistId];
+    let task = tasks.find((t) => t.id === taskId);
+    if (task) {
+      task.title = newTitle;
+
+      setTasksObj({ ...tasksObj });
+    }
+  }
+
   function removeToDoList(todolistId: string) {
     let filteredList = todoLists.filter((tl) => tl.id !== todolistId);
     setTodoLists(filteredList);
@@ -78,9 +97,30 @@ function App() {
     setTasksObj({ ...tasksObj });
   }
 
+  function addToDoList(title: string) {
+    let todolist: TodoListType = {
+      id: v1(),
+      title: title,
+      filter: "all",
+    };
+    setTodoLists([todolist, ...todoLists]);
+    setTasksObj({
+      ...tasksObj,
+      [todolist.id]: [],
+    });
+  }
+
+  function changeToDolistTitle(todolistId: string, newTitle: string) {
+    const currentList = todoLists.find((tl) => tl.id === todolistId);
+    if (currentList) {
+      currentList.title = newTitle;
+      setTodoLists([...todoLists]);
+    }
+  }
+
   return (
-    <div>
-      <h1>Welcome to time managment space</h1>
+    <div className="main-container">
+      <AddItemForm addItem={addToDoList} />
       {todoLists.map((tl) => {
         let tasksForTodoList = tasksObj[tl.id];
 
@@ -101,7 +141,9 @@ function App() {
               addTask={addTask}
               chengeStatus={chengeStatus}
               removeToDoList={removeToDoList}
+              changeTaskTitle={changeTaskTitle}
               filter={tl.filter}
+              changeToDolistTitle={changeToDolistTitle}
             />
           </div>
         );
