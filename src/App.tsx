@@ -1,22 +1,24 @@
 import { useState } from "react";
-import TodoList, { TaskI } from "./components/TodoList";
-import "./index.css";
+
 import { v1 } from "uuid";
-import AddItemForm from "./components/AddItemForm";
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
-
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
+import "./index.css";
+
+import AddItemForm from "./components/AddItemForm";
+import TodoList, { TaskI } from "./components/TodoList";
+
 export type FilterValueType = "all" | "completed" | "active";
 
-type TodoListType = {
+export type TodoListType = {
   id: string;
   title: string;
   filter: FilterValueType;
@@ -30,7 +32,7 @@ function App() {
   let TLId1 = v1();
   let TLId2 = v1();
   let [todoLists, setTodoLists] = useState<Array<TodoListType>>([
-    { id: TLId1, title: "What to lern?", filter: "all" },
+    { id: TLId1, title: "What to learn?", filter: "all" },
     { id: TLId2, title: "What to buy?", filter: "all" },
   ]);
 
@@ -151,7 +153,7 @@ function App() {
         <Grid container style={{ padding: "20px" }}>
           <AddItemForm addItem={addToDoList} />
         </Grid>
-        <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           {todoLists.map((tl) => {
             let tasksForTodoList = tasksObj[tl.id];
 
