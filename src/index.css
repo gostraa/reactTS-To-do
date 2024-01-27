@@ -10,19 +10,23 @@ body {
 
   height: 100vh;
 }
+* {
+  list-style: none;
+  box-sizing: border-box;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
+/* 
 .main-container {
   display: flex;
   flex-wrap: wrap;
   gap: 24px;
   align-items: center;
-}
-.todo-container {
+} */
+/* .todo-container {
   background-color: #ffc0cb;
   padding: 20px;
   border-radius: 10px;
@@ -52,8 +56,8 @@ code {
   margin-right: 10px;
   border: 2px solid #000;
   border-radius: 50%;
-}
-.error {
+} */
+/* .error {
   border: red 1px solid;
 }
 
@@ -67,4 +71,4 @@ code {
 
 .is-done {
   opacity: 0.5;
-}
+} */

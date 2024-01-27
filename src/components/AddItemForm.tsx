@@ -1,4 +1,7 @@
 import { ChangeEvent, useState } from "react";
+import { IconButton } from "@mui/material";
+import ControlPointIcon from "@mui/icons-material/ControlPoint";
+import TextField from "@mui/material/TextField";
 
 type AddItemPropsType = {
   addItem: (title: string) => void;
@@ -23,15 +26,20 @@ function AddItemForm(props: AddItemPropsType) {
   };
   return (
     <div>
-      <input
+      <TextField
+        id="standard-basic"
+        label="add text"
+        variant="standard"
         type="text"
         value={inputData}
         onChange={onSetInputData}
-        className={IsError ? "error" : ""}
+        error={!!IsError}
+        helperText={IsError && "Field is required"}
       />
 
-      <button onClick={onAddTask}>+</button>
-      {IsError && <p className="error-message">Field is required</p>}
+      <IconButton color={"primary"} onClick={onAddTask}>
+        <ControlPointIcon />
+      </IconButton>
     </div>
   );
 }
