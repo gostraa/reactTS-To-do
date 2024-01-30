@@ -1,12 +1,6 @@
 import { v1 } from "uuid";
 import { FilterValueType, TodoListType } from "../App";
 
-type ActionsType =
-  | RemoveTodoListActionType
-  | AddTodoListActionType
-  | ChangeTodoListTitleActionType
-  | ChangeTodoListFilterActionType;
-
 export type RemoveTodoListActionType = {
   type: "REMOVE-TODOLIST";
   id: string;
@@ -15,6 +9,7 @@ export type RemoveTodoListActionType = {
 export type AddTodoListActionType = {
   type: "ADD-TODOLIST";
   title: string;
+  todolistId: string;
 };
 
 export type ChangeTodoListTitleActionType = {
@@ -29,6 +24,13 @@ export type ChangeTodoListFilterActionType = {
   filter: FilterValueType;
 };
 
+type ActionsType =
+  | RemoveTodoListActionType
+  | AddTodoListActionType
+  | ChangeTodoListTitleActionType
+  | ChangeTodoListFilterActionType
+  | AddTodoListActionType;
+
 export const todolistsReducer = (
   state: Array<TodoListType>,
   action: ActionsType
@@ -41,7 +43,7 @@ export const todolistsReducer = (
       return [
         ...state,
         {
-          id: v1(),
+          id: action.todolistId,
           title: action.title,
           filter: "all",
         },
@@ -66,6 +68,30 @@ export const todolistsReducer = (
     }
 
     default:
-      throw new Error("erroRR");
+      throw new Error("this action type is not valid");
   }
+};
+
+export const removeTodoListAC = (
+  todoListId: string
+): RemoveTodoListActionType => {
+  return { type: "REMOVE-TODOLIST", id: todoListId };
+};
+
+export const addTodoListAC = (title: string): AddTodoListActionType => {
+  return { type: "ADD-TODOLIST", title: title, todolistId: v1() };
+};
+
+export const changeTodoListTitleAC = (
+  todoListId: string,
+  title: string
+): ChangeTodoListTitleActionType => {
+  return { type: "CHANGE-TODOLIST-TITLE", title: title, id: todoListId };
+};
+
+export const changeTodoListFilterAC = (
+  todoListId: string,
+  filter: FilterValueType
+): ChangeTodoListFilterActionType => {
+  return { type: "CHANGE-TODOLIST-FILTER", filter: filter, id: todoListId };
 };
