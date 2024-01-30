@@ -3,8 +3,10 @@ import { FilterValueType, TodoListType } from "../App";
 import {
   ChangeTodoListFilterActionType,
   ChangeTodoListTitleActionType,
+  addTodoListAC,
   todolistsReducer,
 } from "./todolists-reducer";
+import { tasksReducer } from "./tasks-reducer";
 
 test("correct todolist should be removed", () => {
   let TLId1 = v1();
@@ -35,10 +37,9 @@ test("correct todolist should be added", () => {
     { id: TLId2, title: "What to buy?", filter: "all" },
   ];
 
-  const endState = todolistsReducer(startState, {
-    type: "ADD-TODOLIST",
-    title: newTodolistTitle,
-  });
+  const action = addTodoListAC("New Todolist");
+
+  const endState = todolistsReducer(startState, action);
 
   expect(endState.length).toBe(3);
   expect(endState[2].title).toBe(newTodolistTitle);
