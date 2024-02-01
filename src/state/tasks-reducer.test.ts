@@ -1,4 +1,3 @@
-import { error } from "console";
 import { TaskObjStateType } from "../App";
 import {
   addTaskAC,

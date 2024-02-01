@@ -3,6 +3,8 @@ import { TaskObjStateType } from "../App";
 import {
   AddTodoListActionType,
   RemoveTodoListActionType,
+  TLId1,
+  TLId2,
 } from "./todolists-reducer";
 
 export type RemoveTaskActionType = {
@@ -38,8 +40,22 @@ export type ActionsType =
   | AddTodoListActionType
   | RemoveTodoListActionType;
 
+const initialState: TaskObjStateType = {
+  [TLId1]: [
+    { id: v1(), title: "TypeScript", isDone: true },
+    { id: v1(), title: "Angular", isDone: false },
+    { id: v1(), title: "English", isDone: true },
+    { id: v1(), title: "React", isDone: false },
+  ],
+  [TLId2]: [
+    { id: v1(), title: "Milk", isDone: false },
+    { id: v1(), title: "Vegetables", isDone: false },
+    { id: v1(), title: "Fruits", isDone: true },
+    { id: v1(), title: "Ice cream", isDone: false },
+  ],
+};
 export const tasksReducer = (
-  state: TaskObjStateType,
+  state: TaskObjStateType = initialState,
   action: ActionsType
 ): TaskObjStateType => {
   switch (action.type) {
@@ -98,7 +114,7 @@ export const tasksReducer = (
     }
 
     default:
-      throw new Error("this action type is not valid");
+      return state;
   }
 };
 

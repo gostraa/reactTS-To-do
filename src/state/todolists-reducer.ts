@@ -30,25 +30,29 @@ type ActionsType =
   | ChangeTodoListTitleActionType
   | ChangeTodoListFilterActionType
   | AddTodoListActionType;
-
+export let TLId1 = v1();
+export let TLId2 = v1();
+const initialState: Array<TodoListType> = [
+  { id: TLId1, title: "What to learn?", filter: "all" },
+  { id: TLId2, title: "What to buy?", filter: "all" },
+];
 export const todolistsReducer = (
-  state: Array<TodoListType>,
+  state: Array<TodoListType> = initialState,
   action: ActionsType
 ): Array<TodoListType> => {
   switch (action.type) {
     case "REMOVE-TODOLIST": {
       return state.filter((tl) => tl.id !== action.id);
     }
-    case "ADD-TODOLIST": {
+    case "ADD-TODOLIST":
       return [
-        ...state,
         {
           id: action.todolistId,
           title: action.title,
           filter: "all",
         },
+        ...state,
       ];
-    }
 
     case "CHANGE-TODOLIST-TITLE": {
       const currentList = state.find((tl) => tl.id === action.id);
@@ -68,7 +72,7 @@ export const todolistsReducer = (
     }
 
     default:
-      throw new Error("this action type is not valid");
+      return state;
   }
 };
 

@@ -6,7 +6,6 @@ import {
   addTodoListAC,
   todolistsReducer,
 } from "./todolists-reducer";
-import { tasksReducer } from "./tasks-reducer";
 
 test("correct todolist should be removed", () => {
   let TLId1 = v1();
@@ -42,8 +41,9 @@ test("correct todolist should be added", () => {
   const endState = todolistsReducer(startState, action);
 
   expect(endState.length).toBe(3);
-  expect(endState[2].title).toBe(newTodolistTitle);
-  expect(endState[2].filter).toBe("all");
+  expect(endState[0].title).toBe(newTodolistTitle);
+  expect(endState[0].filter).toBe("all");
+  expect(endState[0].id).toBeDefined();
 });
 
 test("correct todolist should it's name", () => {
