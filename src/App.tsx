@@ -1,6 +1,3 @@
-import { useReducer } from "react";
-
-import { v1 } from "uuid";
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
@@ -20,14 +17,12 @@ import {
   changeTodoListFilterAC,
   changeTodoListTitleAC,
   removeTodoListAC,
-  todolistsReducer,
 } from "./state/todolists-reducer";
 import {
   addTaskAC,
   changeTaskStatusAC,
   changeTaskTitleAC,
   removeTaskAC,
-  tasksReducer,
 } from "./state/tasks-reducer";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
