@@ -116,12 +116,12 @@ function App() {
 
             if (tl.filter === "completed") {
               tasksForTodoList = tasksForTodoList.filter(
-                (t) => t.isDone === true
+                (t) => t?.isDone === true
               );
             }
             if (tl.filter === "active") {
               tasksForTodoList = tasksForTodoList.filter(
-                (t) => t.isDone === false
+                (t) => t?.isDone === false
               );
             }
             return (
