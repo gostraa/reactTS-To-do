@@ -33,7 +33,7 @@ function AddItemForm(props: AddItemPropsType) {
         type="text"
         value={inputData}
         onChange={onSetInputData}
-        error={!!IsError}
+        error={IsError}
         helperText={IsError && "Field is required"}
       />
 
