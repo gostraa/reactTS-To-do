@@ -18,12 +18,7 @@ import {
   changeTodoListTitleAC,
   removeTodoListAC,
 } from "./state/todolists-reducer";
-import {
-  addTaskAC,
-  changeTaskStatusAC,
-  changeTaskTitleAC,
-  removeTaskAC,
-} from "./state/tasks-reducer";
+
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { AppRootStore } from "./state/store";
@@ -41,37 +36,17 @@ export type TaskObjStateType = {
 };
 
 function App() {
+  const dispatch = useDispatch();
   const todoLists = useSelector<AppRootStore, Array<TodoListType>>(
     (state) => state.todolists
   );
+
   const tasksObj = useSelector<AppRootStore, TaskObjStateType>(
     (state) => state.tasks
   );
-  const dispatch = useDispatch();
-
-  function removeTask(id: string, todolistId: string) {
-    const action = removeTaskAC(id, todolistId);
-    dispatch(action);
-  }
 
   function changeFilter(value: FilterValueType, todolistId: string) {
     dispatch(changeTodoListFilterAC(todolistId, value));
-  }
-
-  function addTask(title: string, todolistId: string) {
-    dispatch(addTaskAC(title, todolistId));
-  }
-
-  function chengeStatus(taskId: string, isDone: boolean, todolistId: string) {
-    dispatch(changeTaskStatusAC(taskId, todolistId, isDone));
-  }
-
-  function changeTaskTitle(
-    taskId: string,
-    newTitle: string,
-    todolistId: string
-  ) {
-    dispatch(changeTaskTitleAC(taskId, todolistId, newTitle));
   }
 
   function removeToDoList(todolistId: string) {
@@ -136,12 +111,8 @@ function App() {
                     id={tl.id}
                     title={tl.title}
                     task={tasksForTodoList}
-                    removeTask={removeTask}
                     changeFilter={changeFilter}
-                    addTask={addTask}
-                    chengeStatus={chengeStatus}
                     removeToDoList={removeToDoList}
-                    changeTaskTitle={changeTaskTitle}
                     filter={tl.filter}
                     changeToDolistTitle={changeToDolistTitle}
                   />
