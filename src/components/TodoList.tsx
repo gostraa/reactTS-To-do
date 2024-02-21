@@ -9,6 +9,14 @@ import { FilterValueType } from "../App";
 import AddItemForm from "./AddItemForm";
 import EditableSpan from "./EditableSpan";
 
+import {
+  addTaskAC,
+  changeTaskStatusAC,
+  changeTaskTitleAC,
+  removeTaskAC,
+} from "../state/tasks-reducer";
+import { useDispatch } from "react-redux";
+
 export interface TaskI {
   id: string;
   title: string;
@@ -20,16 +28,11 @@ type PropsType = {
   title: string;
   task: TaskI[];
   filter: FilterValueType;
-  removeTask: (id: string, todolistId: string) => void;
+
   changeFilter: (value: FilterValueType, todolistId: string) => void;
-  addTask: (title: string, todolistId: string) => void;
-  chengeStatus: (taskId: string, isDone: boolean, todolistId: string) => void;
+
   removeToDoList: (todolistId: string) => void;
-  changeTaskTitle: (
-    taskId: string,
-    newTitle: string,
-    todolistId: string
-  ) => void;
+
   changeToDolistTitle: (todolistId: string, newTitle: string) => void;
 };
 
@@ -39,8 +42,31 @@ const TodoList = (props: PropsType) => {
   const onCompletedFilter = () => props.changeFilter("completed", props.id);
   const removeToDoListt = () => props.removeToDoList(props.id);
 
-  const addTask = (title: string) => {
-    props.addTask(title, props.id);
+  const dispatch = useDispatch();
+
+  function removeTask(id: string, todolistId: string) {
+    const action = removeTaskAC(id, todolistId);
+    dispatch(action);
+  }
+
+  function addTask(title: string, todolistId: string) {
+    dispatch(addTaskAC(title, todolistId));
+  }
+
+  function chengeStatus(taskId: string, isDone: boolean, todolistId: string) {
+    dispatch(changeTaskStatusAC(taskId, todolistId, isDone));
+  }
+
+  function changeTaskTitle(
+    taskId: string,
+    newTitle: string,
+    todolistId: string
+  ) {
+    dispatch(changeTaskTitleAC(taskId, todolistId, newTitle));
+  }
+
+  const handleAddTask = (title: string) => {
+    addTask(title, props.id);
   };
 
   const changeToDolistTitle = (newTitle: string) => {
@@ -57,14 +83,14 @@ const TodoList = (props: PropsType) => {
         </IconButton>
       </h2>
 
-      <AddItemForm addItem={addTask} />
+      <AddItemForm addItem={handleAddTask} />
       <ul className="todo-list">
         {toMap.map((item) => {
           const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-            props.chengeStatus(item.id, e.currentTarget.checked, props.id);
+            chengeStatus(item.id, e.currentTarget.checked, props.id);
           };
           const onChangeTitleHandler = (newValue: string) => {
-            props.changeTaskTitle(item.id, newValue, props.id);
+            changeTaskTitle(item.id, newValue, props.id);
             //  props.chengeStatus(item.id, e.currentTarget.checked, props.id);
           };
           return (
@@ -81,7 +107,7 @@ const TodoList = (props: PropsType) => {
 
               <IconButton
                 onClick={() => {
-                  props.removeTask(item.id, props.id);
+                  removeTask(item.id, props.id);
                 }}
               >
                 <DeleteIcon fontSize="small" />
