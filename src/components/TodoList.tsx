@@ -82,15 +82,15 @@ const TodoList = (props: PropsType) => {
             <li key={item.id} className={item.isDone ? "is-done" : ""}>
               <Checkbox
                 checked={item.isDone}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   dispatch(
                     changeTaskStatusAC(
                       item.id,
                       props.id,
                       e.currentTarget.checked
                     )
-                  );
-                }}
+                  )
+                }
                 className="checkmark"
               />
               <EditableSpan
