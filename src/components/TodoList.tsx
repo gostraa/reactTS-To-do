@@ -16,6 +16,8 @@ import {
   removeTaskAC,
 } from "../state/tasks-reducer";
 import { useDispatch } from "react-redux";
+import { AppRootStore } from "../state/store";
+import { useSelector } from "react-redux";
 
 export interface TaskI {
   id: string;
@@ -26,7 +28,6 @@ export interface TaskI {
 type PropsType = {
   id: string;
   title: string;
-  task: TaskI[];
   filter: FilterValueType;
 
   changeFilter: (value: FilterValueType, todolistId: string) => void;
@@ -41,39 +42,26 @@ const TodoList = (props: PropsType) => {
   const onActiveFilter = () => props.changeFilter("active", props.id);
   const onCompletedFilter = () => props.changeFilter("completed", props.id);
   const removeToDoListt = () => props.removeToDoList(props.id);
+  const tasks = useSelector<AppRootStore, Array<TaskI>>(
+    (state) => state.tasks[props.id]
+  );
 
   const dispatch = useDispatch();
-
-  function removeTask(id: string, todolistId: string) {
-    const action = removeTaskAC(id, todolistId);
-    dispatch(action);
-  }
-
-  function addTask(title: string, todolistId: string) {
-    dispatch(addTaskAC(title, todolistId));
-  }
-
-  function chengeStatus(taskId: string, isDone: boolean, todolistId: string) {
-    dispatch(changeTaskStatusAC(taskId, todolistId, isDone));
-  }
-
-  function changeTaskTitle(
-    taskId: string,
-    newTitle: string,
-    todolistId: string
-  ) {
-    dispatch(changeTaskTitleAC(taskId, todolistId, newTitle));
-  }
-
-  const handleAddTask = (title: string) => {
-    addTask(title, props.id);
-  };
 
   const changeToDolistTitle = (newTitle: string) => {
     props.changeToDolistTitle(props.id, newTitle);
   };
 
-  const toMap = props.task;
+  let tasksForTodoList = tasks;
+
+  if (props.filter === "completed") {
+    tasksForTodoList = tasksForTodoList.filter((t) => t?.isDone === true);
+  }
+  if (props.filter === "active") {
+    tasksForTodoList = tasksForTodoList.filter((t) => t?.isDone === false);
+  }
+
+  const toMap = tasksForTodoList;
   return (
     <div>
       <h2 className="todo-title">
@@ -83,31 +71,38 @@ const TodoList = (props: PropsType) => {
         </IconButton>
       </h2>
 
-      <AddItemForm addItem={handleAddTask} />
+      <AddItemForm
+        addItem={(title) => {
+          dispatch(addTaskAC(title, props.id));
+        }}
+      />
       <ul className="todo-list">
         {toMap.map((item) => {
-          const onChangeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-            chengeStatus(item.id, e.currentTarget.checked, props.id);
-          };
-          const onChangeTitleHandler = (newValue: string) => {
-            changeTaskTitle(item.id, newValue, props.id);
-            //  props.chengeStatus(item.id, e.currentTarget.checked, props.id);
-          };
           return (
             <li key={item.id} className={item.isDone ? "is-done" : ""}>
               <Checkbox
                 checked={item.isDone}
-                onChange={onChangeStatusHandler}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  dispatch(
+                    changeTaskStatusAC(
+                      item.id,
+                      props.id,
+                      e.currentTarget.checked
+                    )
+                  );
+                }}
                 className="checkmark"
               />
               <EditableSpan
                 title={item.title}
-                onChange={onChangeTitleHandler}
+                onChange={(newValue: string) => {
+                  dispatch(changeTaskTitleAC(item.id, props.id, newValue));
+                }}
               />
 
               <IconButton
                 onClick={() => {
-                  removeTask(item.id, props.id);
+                  dispatch(removeTaskAC(item.id, props.id));
                 }}
               >
                 <DeleteIcon fontSize="small" />

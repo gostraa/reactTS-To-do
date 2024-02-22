@@ -41,10 +41,6 @@ function App() {
     (state) => state.todolists
   );
 
-  const tasksObj = useSelector<AppRootStore, TaskObjStateType>(
-    (state) => state.tasks
-  );
-
   function changeFilter(value: FilterValueType, todolistId: string) {
     dispatch(changeTodoListFilterAC(todolistId, value));
   }
@@ -87,18 +83,6 @@ function App() {
         </Grid>
         <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           {todoLists.map((tl) => {
-            let tasksForTodoList = tasksObj[tl.id];
-
-            if (tl.filter === "completed") {
-              tasksForTodoList = tasksForTodoList.filter(
-                (t) => t?.isDone === true
-              );
-            }
-            if (tl.filter === "active") {
-              tasksForTodoList = tasksForTodoList.filter(
-                (t) => t?.isDone === false
-              );
-            }
             return (
               <Grid item key={tl.id}>
                 <Paper
@@ -110,7 +94,6 @@ function App() {
                   <TodoList
                     id={tl.id}
                     title={tl.title}
-                    task={tasksForTodoList}
                     changeFilter={changeFilter}
                     removeToDoList={removeToDoList}
                     filter={tl.filter}
