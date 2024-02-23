@@ -22,6 +22,7 @@ import {
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { AppRootStore } from "./state/store";
+import { useCallback } from "react";
 
 export type FilterValueType = "all" | "completed" | "active";
 
@@ -49,10 +50,10 @@ function App() {
     dispatch(removeTodoListAC(todolistId));
   }
 
-  function addToDoList(title: string) {
+  const addToDoList = useCallback((title: string) => {
     const action = addTodoListAC(title);
     dispatch(action);
-  }
+  }, []);
 
   function changeToDolistTitle(todolistId: string, newTitle: string) {
     dispatch(changeTodoListTitleAC(todolistId, newTitle));

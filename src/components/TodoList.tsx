@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useCallback } from "react";
 import { IconButton, Button } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Checkbox from "@mui/material/Checkbox";
@@ -72,9 +72,9 @@ const TodoList = (props: PropsType) => {
       </h2>
 
       <AddItemForm
-        addItem={(title) => {
+        addItem={useCallback((title) => {
           dispatch(addTaskAC(title, props.id));
-        }}
+        }, [])}
       />
       <ul className="todo-list">
         {toMap.map((item) => {

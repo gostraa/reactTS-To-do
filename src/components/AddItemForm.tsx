@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { IconButton } from "@mui/material";
 import ControlPointIcon from "@mui/icons-material/ControlPoint";
 import TextField from "@mui/material/TextField";
@@ -7,7 +7,7 @@ type AddItemPropsType = {
   addItem: (title: string) => void;
 };
 
-function AddItemForm(props: AddItemPropsType) {
+const AddItemForm = React.memo((props: AddItemPropsType) => {
   const [inputData, setInputData] = useState<string>("");
   const [IsError, setIsError] = useState<boolean>(false);
 
@@ -42,6 +42,5 @@ function AddItemForm(props: AddItemPropsType) {
       </IconButton>
     </div>
   );
-}
-
+});
 export default AddItemForm;
